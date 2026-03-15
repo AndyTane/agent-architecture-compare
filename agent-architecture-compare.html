@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nanobot vs NanoClaw vs OpenClaw · 彩色图版对比</title>
+  <style>
+    :root {
+      --bg: #eef5ea;
+      --panel: #f7fbf4;
+      --panel-2: #edf4e7;
+      --text: #1f2937;
+      --muted: #4b5563;
+      --line: #d6e2d3;
+      --accent: #256f5b;
+      --accent2: #2f8f73;
+      --accent3: #b58a3a;
+      --nano: #4f8fb8;
+      --nanoclaw: #7a68b8;
+      --openclaw: #4d9b72;
+      --nano-bg: rgba(79, 143, 184, 0.10);
+      --nanoclaw-bg: rgba(122, 104, 184, 0.10);
+      --openclaw-bg: rgba(77, 155, 114, 0.10);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #f3f8ee 0%, #e7f0e3 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .wrap { max-width: 1380px; margin: 0 auto; padding: 28px 18px 72px; }
+    h1, h2, h3 { margin: 0 0 12px; color: #111827; }
+    h1 { font-size: 40px; line-height: 1.1; }
+    h2 { font-size: 28px; margin-top: 36px; }
+    h3 { font-size: 18px; }
+    p, li { color: var(--muted); font-weight: 400; }
+    .hero, .card, .diagram, .note, .sys-card {
+      background: rgba(247, 251, 244, 0.96);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 10px 26px rgba(86, 104, 86, 0.10);
+    }
+    .hero { padding: 28px; }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .card, .sys-card { padding: 22px; }
+    .card ul, .sys-card ul { margin: 10px 0 0 18px; padding: 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .chip {
+      background: #eef4ea;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .chip.nano { border-color: rgba(83,199,255,.45); color: #24577a; }
+    .chip.nanoclaw { border-color: rgba(139,124,255,.45); color: #5a4b96; }
+    .chip.openclaw { border-color: rgba(88,211,155,.45); color: #2d6b4d; }
+    .diagram { padding: 22px; margin-top: 18px; overflow: hidden; }
+    .diagram h3 { margin-bottom: 10px; }
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .stack { display: grid; gap: 18px; margin-top: 18px; }
+    .three-stack { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 18px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: rgba(247, 251, 244, 0.98);
+    }
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+    th:last-child, td:last-child { border-right: none; }
+    tr:last-child td { border-bottom: none; }
+    th { background: #e8f0e4; color: #111827; font-weight: 700; }
+    .note { margin-top: 18px; padding: 18px; border-left: 4px solid var(--accent3); }
+    code {
+      background: #edf3e8;
+      border: 1px solid #c9d7c7;
+      border-radius: 8px;
+      padding: 2px 6px;
+      color: #2d4334;
+    }
+    .small { font-size: 13px; color: #6b7280; }
+    .sources { margin-top: 24px; color: var(--muted); }
+    .mermaid {
+      width: 100%;
+      min-width: 0;
+      overflow: visible;
+    }
+    .mermaid svg {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+    .mermaid text {
+      fill: #111827 !important;
+      font-size: 18px !important;
+      font-weight: 600 !important;
+    }
+    .mermaid .node rect,
+    .mermaid .node polygon,
+    .mermaid .node path,
+    .mermaid .node circle,
+    .mermaid .node ellipse {
+      stroke-width: 2.4px !important;
+    }
+    .mermaid .label,
+    .mermaid .label text,
+    .mermaid .nodeLabel,
+    .mermaid span {
+      color: #111827 !important;
+      fill: #111827 !important;
+    }
+    .mermaid .edgeLabel {
+      background-color: #f7fbf4 !important;
+      color: #111827 !important;
+      font-size: 16px !important;
+      font-weight: 600 !important;
+    }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; }
+    .legend span {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: #374151; font-size: 14px; font-weight: 500;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 999px; display: inline-block; }
+    .dot.nano { background: var(--nano); }
+    .dot.nanoclaw { background: var(--nanoclaw); }
+    .dot.openclaw { background: var(--openclaw); }
+    .sys-card.nano { border-color: rgba(83,199,255,.45); background: linear-gradient(180deg, #f6fbff, #eef6fb); }
+    .sys-card.nanoclaw { border-color: rgba(139,124,255,.45); background: linear-gradient(180deg, #faf8ff, #f4f1fb); }
+    .sys-card.openclaw { border-color: rgba(88,211,155,.45); background: linear-gradient(180deg, #f5fcf8, #edf8f1); }
+    .sys-title.nano { color: #1f5f86; }
+    .sys-title.nanoclaw { color: #5d4fa3; }
+    .sys-title.openclaw { color: #2f7a56; }
+    @media (max-width: 1100px) {
+      .cards, .compare-grid, .three-stack { grid-template-columns: 1fr; }
+      h1 { font-size: 32px; }
+    }
+  </style>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#edf4e7',
+        primaryTextColor: '#111827',
+        primaryBorderColor: '#6f8c79',
+        lineColor: '#667a6e',
+        secondaryColor: '#eef5ea',
+        tertiaryColor: '#f3eddc',
+        clusterBkg: '#f6fbf2',
+        clusterBorder: '#8fa698',
+        fontFamily: 'Inter, system-ui, sans-serif',
+        fontSize: '18px',
+        mainBkg: '#f7fbf4',
+        nodeBorder: '#6f8c79'
+      },
+      flowchart: { useMaxWidth: true, htmlLabels: true, curve: 'basis', nodeSpacing: 40, rankSpacing: 55, padding: 20 },
+      sequence: { useMaxWidth: true, diagramMarginX: 30, diagramMarginY: 20, actorMargin: 70, width: 220, height: 70, boxMargin: 12, boxTextMargin: 8, noteMargin: 12, messageMargin: 40 },
+      gantt: { useMaxWidth: true }
+    });
+  </script>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="small">架构对比 · Mermaid 彩色图版 · 2026-03-15</div>
+      <h1>Nanobot / NanoClaw / OpenClaw 架构对比</h1>
+      <p>
+        基于本地仓库与当前 OpenClaw 实际运行链路整理，重点展示三者的真实执行路径、控制面差异与适用场景。
+      </p>
+      <div class="chips">
+        <div class="chip nano">Nanobot = 蓝色系</div>
+        <div class="chip nanoclaw">NanoClaw = 紫色系</div>
+        <div class="chip openclaw">OpenClaw = 绿色系</div>
+      </div>
+    </section>
+
+    <h2>一屏结论</h2>
+    <div class="cards">
+      <section class="card">
+        <h3>Nanobot</h3>
+        <p>定位是“超轻量但有完整 agent 能力”的平台。不是 demo，而是已经有 channels、session、cron、heartbeat、gateway、MCP 的实战框架。</p>
+        <ul>
+          <li>适合研究、教学、快速二开</li>
+          <li>强项：轻量 + 迭代快 + Python 生态</li>
+          <li>短板：宿主机控制、统一控制面深度弱于 OpenClaw</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3>NanoClaw</h3>
+        <p>更像 TypeScript 版轻量骨架。模块层次很清楚，适合拿来学习 agent platform 怎么拆层。</p>
+        <ul>
+          <li>适合快速读结构、自己重写、做精简版系统</li>
+          <li>强项：整洁、清晰、容易上手</li>
+          <li>短板：工具面和平台成熟度目前最薄</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h3>OpenClaw</h3>
+        <p>不只是 agent loop，而是完整的 Gateway / Tool / Node / Browser / Canvas / Messaging 平台。</p>
+        <ul>
+          <li>适合生产级个人代理、跨渠道、跨设备控制</li>
+          <li>强项：统一控制面、外设能力、消息面最强</li>
+          <li>短板：复杂度最高，认知负担也最高</li>
+        </ul>
+      </section>
+    </div>
+
+    <h2>总览架构图</h2>
+    <section class="diagram">
+      <h3>三者在“平台深度”上的差异</h3>
+      <div class="legend">
+        <span><i class="dot nano"></i> Nanobot</span>
+        <span><i class="dot nanoclaw"></i> NanoClaw</span>
+        <span><i class="dot openclaw"></i> OpenClaw</span>
+      </div>
+      <div class="mermaid">
+flowchart TB
+    U[用户 / 聊天表面 / CLI]
+    U --> N1
+    U --> N2
+    U --> N3
+
+    subgraph NB[Nanobot]
+      direction TB
+      N1[Channel Adapters]:::nano --> N1b[Gateway / Bus]:::nano --> N1c[Session / Memory]:::nano --> N1d[Agent Core]:::nano
+      N1d --> N1e[Providers]:::nano
+      N1d --> N1f[Tools / MCP / Cron]:::nano
+    end
+
+    subgraph NC[NanoClaw]
+      direction TB
+      N2[CLI / Channel Manager]:::nanoclaw --> N2b[Agent Loop]:::nanoclaw --> N2c[Context Builder]:::nanoclaw
+      N2b --> N2d[Provider Manager]:::nanoclaw
+      N2b --> N2e[Tool Registry]:::nanoclaw
+      N2b --> N2f[Memory / Session]:::nanoclaw
+    end
+
+    subgraph OC[OpenClaw]
+      direction TB
+      N3[Messaging Surfaces]:::openclaw --> N3b[Gateway]:::openclaw --> N3c[Session Runtime]:::openclaw --> N3d[Context + Memory + Skills]:::openclaw --> N3e[Agent Loop]:::openclaw --> N3f[Tool Layer]:::openclaw --> N3g[Browser / Nodes / Canvas / Message Routing]:::openclaw
+    end
+
+    classDef nano fill:#eaf4fb,stroke:#4f8fb8,color:#1f2937,stroke-width:2px;
+    classDef nanoclaw fill:#f1edfb,stroke:#7a68b8,color:#1f2937,stroke-width:2px;
+    classDef openclaw fill:#eaf7f0,stroke:#4d9b72,color:#1f2937,stroke-width:2px;
+      </div>
+      <p>看总览就能看到核心差别：<strong>Nanobot 和 NanoClaw 都是 agent-first</strong>；<strong>OpenClaw 是 gateway-first 的统一控制平台</strong>。</p>
+    </section>
+
+    <h2>实际执行链路图</h2>
+    <div class="three-stack">
+      <section class="sys-card nano">
+        <h3 class="sys-title nano">Nanobot 执行链路</h3>
+        <div class="mermaid">
+flowchart TD
+    A1[用户消息 / CLI]:::nano --> A2[Channel Adapter]:::nano --> A3[Gateway / Event Bus]:::nano --> A4[Session / Memory]:::nano --> A5[Agent Core / Context]:::nano --> A6[Provider]:::nano
+    A6 --> A7{需要工具?}
+    A7 -- 否 --> A10[生成最终回复]:::nano --> A11[回写到原聊天表面]:::nano
+    A7 -- 是 --> A8[Tools / MCP / Cron / Subtasks]:::nano --> A9[工具结果回注入 Agent]:::nano --> A6
+    classDef nano fill:#eaf4fb,stroke:#4f8fb8,color:#1f2937,stroke-width:2px;
+    style A7 fill:#f3f8fc,stroke:#4f8fb8,color:#1f2937,stroke-width:2px
+        </div>
+        <p>Nanobot 已经不是轻量聊天脚本，而是一个闭环完整的 agent runtime。</p>
+      </section>
+
+      <section class="sys-card nanoclaw">
+        <h3 class="sys-title nanoclaw">NanoClaw 执行链路</h3>
+        <div class="mermaid">
+flowchart TD
+    B1[CLI / Channel 输入]:::nanoclaw --> B2[agent / gateway 入口]:::nanoclaw --> B3[Agent Loop]:::nanoclaw --> B4[Context Builder]:::nanoclaw --> B5[Provider Manager]:::nanoclaw
+    B5 --> B6{模型返回工具调用?}
+    B6 -- 否 --> B9[最终回复]:::nanoclaw --> B10[Memory / Session 写回]:::nanoclaw --> B11[输出到 CLI / 渠道]:::nanoclaw
+    B6 -- 是 --> B7[Tool Registry]:::nanoclaw --> B8[Shell / File 等基础工具执行]:::nanoclaw --> B3
+    classDef nanoclaw fill:#f1edfb,stroke:#7a68b8,color:#1f2937,stroke-width:2px;
+    style B6 fill:#f6f3fc,stroke:#7a68b8,color:#1f2937,stroke-width:2px
+        </div>
+        <p>NanoClaw 的好处是结构清楚：Agent Loop、Context、Provider、Tool、Memory 都能快速定位。</p>
+      </section>
+
+      <section class="sys-card openclaw">
+        <h3 class="sys-title openclaw">OpenClaw 执行链路</h3>
+        <div class="mermaid">
+flowchart TD
+    C1[Feishu / Telegram / Discord / Signal / WebChat / CLI]:::openclaw --> C2[Gateway]:::openclaw --> C3[Pairing / Auth / Routing]:::openclaw --> C4[Session Runtime]:::openclaw --> C5[Workspace + Skills + Memory]:::openclaw --> C6[LLM / Agent Loop]:::openclaw
+    C6 --> C7{Tool Calls?}
+    C7 -- 否 --> C12[Final Response]:::openclaw --> C14[Gateway 路由回䎟道]:::openclaw
+    C7 -- 是 --> C8[Tool Layer]:::openclaw --> C9[exec / browser / message / canvas / feishu / memory / web / subagents]:::openclaw --> C10{需外部执行面?}
+    C10 -- 否 --> C11[结果回注入 Agent]:::openclaw --> C6
+    C10 -- 是 --> C13[Browser Relay / Node / Canvas Host / Host Control]:::openclaw --> C11
+    classDef openclaw fill:#eaf7f0,stroke:#4d9b72,color:#1f2937,stroke-width:2px;
+    style C7 fill:#f2fbf6,stroke:#4d9b72,color:#1f2937,stroke-width:2px
+    style C10 fill:#f2fbf6,stroke:#4d9b72,color:#1f2937,stroke-width:2px
+        </div>
+        <p>OpenClaw 真正重的是这部分：不仅有 agent loop，还有统一网关、节点、浏览器、宿主机和消息路由能力。</p>
+      </section>
+    </div>
+
+    <h2>活动图：三者如何从“消息”走到“动作”</h2>
+    <section class="diagram">
+      <h3>对比活动图（纵向版，避免横向拖拽）</h3>
+      <div class="mermaid">
+flowchart TD
+    S([收到用户请求]) --> D{系统是哪一类?}
+
+    D -->|Nanobot| NB1[载入 session / memory]:::nano
+    NB1 --> NB2[组 prompt]:::nano --> NB3[调用 provider]:::nano --> NB4{需要工具或 MCP?}
+    NB4 -->|是| NB5[执行工具]:::nano --> NB3
+    NB4 -->|否| NB6[返回消息]:::nano
+
+    D -->|NanoClaw| NC1[进入 agent loop]:::nanoclaw
+    NC1 --> NC2[context builder]:::nanoclaw --> NC3[provider manager]:::nanoclaw --> NC4{需要工具?}
+    NC4 -->|是| NC5[tool registry]:::nanoclaw --> NC3
+    NC4 -->|否| NC6[写回 memory / session]:::nanoclaw --> NC7[返回消息]:::nanoclaw
+
+    D -->|OpenClaw| OC1[Gateway 路由到 session]:::openclaw
+    OC1 --> OC2[skills + memory + workspace 组装上下文]:::openclaw --> OC3[agent loop]:::openclaw --> OC4{需要工具 / 节点 / 浏览器?}
+    OC4 -->|是| OC5[tools + host/browser/node]:::openclaw --> OC3
+    OC4 -->|否| OC6[Gateway 发回䎟道]:::openclaw
+
+    classDef nano fill:#eaf4fb,stroke:#4f8fb8,color:#1f2937,stroke-width:2px;
+    classDef nanoclaw fill:#f1edfb,stroke:#7a68b8,color:#1f2937,stroke-width:2px;
+    classDef openclaw fill:#eaf7f0,stroke:#4d9b72,color:#1f2937,stroke-width:2px;
+    style D fill:#fbf6e9,stroke:#b58a3a,color:#1f2937,stroke-width:2px
+    style NB4 fill:#f3f8fc,stroke:#4f8fb8,color:#1f2937,stroke-width:2px
+    style NC4 fill:#f6f3fc,stroke:#7a68b8,color:#1f2937,stroke-width:2px
+    style OC4 fill:#f2fbf6,stroke:#4d9b72,color:#1f2937,stroke-width:2px
+      </div>
+      <p>活动图上最明显的区别：<strong>OpenClaw 多了一个稳定的控制中枢 Gateway</strong>；另外两者更像“agent 本体 + 若干外围模块”。</p>
+    </section>
+
+    <h2>时序图：谁在“调度全局”</h2>
+    <section class="diagram">
+      <h3>从时序看，OpenClaw 的平台性最强</h3>
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User
+    participant Surface as Chat Surface / CLI
+    participant Nano as Nanobot / NanoClaw Agent Core
+    participant Gateway as OpenClaw Gateway
+    participant Runtime as Session Runtime
+    participant Tools as Tools / Browser / Node
+
+    User->>Surface: 发消息
+    alt Nanobot / NanoClaw
+      Surface->>Nano: 输入消息
+      Nano->>Nano: 组装上下文 / 调模型
+      Nano->>Tools: 可选工具调用
+      Tools-->>Nano: 结果
+      Nano-->>Surface: 回复
+    else OpenClaw
+      Surface->>Gateway: 消息进入统一网关
+      Gateway->>Runtime: 路由到 session
+      Runtime->>Runtime: 组装 workspace / skills / memory
+      Runtime->>Tools: 调用工具 / 浏览器 / 节点
+      Tools-->>Runtime: 执行结果
+      Runtime-->>Gateway: 最终响应
+      Gateway-->>Surface: 回原渠道
+    end
+      </div>
+      <p>时序上看得最清楚：OpenClaw 不是简单多一层封装，而是把“调度”和“接入”做成了一级公民。</p>
+    </section>
+
+    <h2>对比总表</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th>Nanobot</th>
+          <th>NanoClaw</th>
+          <th>OpenClaw</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>语言</td>
+          <td>Python</td>
+          <td>TypeScript / Node.js</td>
+          <td>Node.js 平台体系</td>
+        </tr>
+        <tr>
+          <td>主定位</td>
+          <td>轻量但完整的个人 AI assistant</td>
+          <td>超轻量骨架化 agent 平台</td>
+          <td>多渠道、多工具、多节点的统一代理平台</td>
+        </tr>
+        <tr>
+          <td>核心切入点</td>
+          <td>agent-first</td>
+          <td>agent-first</td>
+          <td>gateway-first + agent runtime</td>
+        </tr>
+        <tr>
+          <td>工具层</td>
+          <td>已有 MCP 与多能力</td>
+          <td>基础工具为主</td>
+          <td>最全，含 browser / canvas / node / messaging</td>
+        </tr>
+        <tr>
+          <td>渠道能力</td>
+          <td>较完整且增长快</td>
+          <td>已有 Telegram / Discord / DingTalk 等</td>
+          <td>最成熟、统一到 Gateway</td>
+        </tr>
+        <tr>
+          <td>适合场景</td>
+          <td>研究、轻量生产、快速迭代</td>
+          <td>学习架构、定制极简平台</td>
+          <td>真实生产、跨设备、宿主机与浏览器控制</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <section class="note">
+      <h3>最终判断</h3>
+      <p>
+        <strong>NanoClaw</strong> = 最容易看懂的骨架；<br />
+        <strong>Nanobot</strong> = 轻量但已经有完整闭环；<br />
+        <strong>OpenClaw</strong> = 真正的平台级系统，核心差异不是模型，而是 <strong>Gateway + Tools + Nodes + Browser + Messaging</strong> 这一整层控制面。
+      </p>
+    </section>
+
+    <div class="sources">
+      <div><strong>依据来源</strong></div>
+      <ul>
+        <li><code>/root/.openclaw/workspace/nanobot/README.md</code> 与实际目录结构</li>
+        <li><code>/root/.openclaw/workspace/nano-claw/README.md</code>、<code>documentation/ARCHITECTURE.md</code>、<code>src/</code> 实际目录</li>
+        <li><code>/app/docs/concepts/architecture.md</code> 与当前 OpenClaw 实测行为</li>
+        <li>Mermaid 图版增强基于已安装 skill：<code>softaworks/agent-toolkit@mermaid-diagrams</code></li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
